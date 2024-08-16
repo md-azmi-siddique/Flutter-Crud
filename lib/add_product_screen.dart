@@ -12,6 +12,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.white,
         title: const Padding(
           padding: EdgeInsets.only(left: 0, right: 0),
           child: Text("Add Product"),
@@ -38,6 +40,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 height: 30,
               ),
               const TextField(
+                maxLength: 50,
                 decoration: InputDecoration(
                   label: Text("Product Description"),
                   border: OutlineInputBorder(
@@ -67,13 +70,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 height: 30,
               ),
               ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text("Submit")
-              ),
+                  onPressed: () {
+                    print("Button Pressed");
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text("Submit")),
             ],
           ),
         ),
