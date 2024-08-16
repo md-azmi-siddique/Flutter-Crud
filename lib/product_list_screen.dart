@@ -10,8 +10,8 @@ class ProductListScreen extends StatefulWidget {
 class _ProductListScreenState extends State<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 5,
+    return ListView.separated(
+      itemCount: 50,
       itemBuilder: (context, index) {
         return  ListTile(
           title: const Text("Product Name"),
@@ -30,6 +30,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         );
       },
+      separatorBuilder: (_,__)=>const Divider(),
     );
   }
 }

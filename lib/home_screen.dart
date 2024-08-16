@@ -1,3 +1,4 @@
+import 'package:crud_operation/add_product_screen.dart';
 import 'package:crud_operation/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const Icon(Icons.home),
         title: const Padding(
-          padding: EdgeInsets.only(left: 10, right: 0),
+          padding: EdgeInsets.only(left: 0, right: 0),
           child: Text("Home"),
         ),
         backgroundColor: Colors.deepOrange,
@@ -22,7 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: const ProductListScreen(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddProductScreen(),
+            ),
+          );
+        },
         backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
