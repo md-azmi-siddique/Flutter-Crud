@@ -23,6 +23,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: Column(
             children: [
               const TextField(
+                maxLength: 10,
                 decoration: InputDecoration(
                   label: Text("Product Name"),
                   border: OutlineInputBorder(
@@ -37,7 +38,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 30,),
               const TextField(
                 decoration: InputDecoration(
-                  label: Text("Product Name"),
+                  label: Text("Product Description"),
+
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.green,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30,),
+              const TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  label: Text("Product Quantity"),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.green,
