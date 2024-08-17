@@ -53,8 +53,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
         title: Text("Hello"),
         content: Text("kkkk"),
         actions: [
-          TextButton(onPressed: (){}, child: Text("Yes")),
-          TextButton(onPressed: (){}, child: Text("No")),
+          TextButton(onPressed: (){}, child: Text("Yes"),),
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: Text("No"),),
         ],
       );
     });
