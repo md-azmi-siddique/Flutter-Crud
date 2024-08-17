@@ -1,3 +1,4 @@
+import 'package:crud_operation/update_product_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -13,24 +14,49 @@ class _ProductListScreenState extends State<ProductListScreen> {
     return ListView.separated(
       itemCount: 50,
       itemBuilder: (context, index) {
-        return  ListTile(
+        return ListTile(
           title: const Text("Product Name"),
           subtitle: const Wrap(
             spacing: 20,
-            children: [
-              Text("data"),
-              Text("data")
-            ],
+            children: [Text("data"), Text("data")],
           ),
           trailing: Wrap(
             children: [
-              IconButton(onPressed: (){}, icon: const Icon(Icons.edit), color: Colors.green,),
-              IconButton(onPressed: (){}, icon: const Icon(Icons.delete), color: Colors.red,),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UpdateProductScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit),
+                color: Colors.green,
+              ),
+              IconButton(
+                onPressed: _showDeleteConfirmationDialog,
+                icon: const Icon(Icons.delete),
+                color: Colors.red,
+              ),
             ],
           ),
         );
       },
-      separatorBuilder: (_,__)=>const Divider(),
+      separatorBuilder: (_, __) => const Divider(),
     );
+  }
+  void _showDeleteConfirmationDialog(){
+    print("Button is pressing");
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: Text("Hello"),
+        content: Text("kkkk"),
+        actions: [
+          TextButton(onPressed: (){}, child: Text("Yes")),
+          TextButton(onPressed: (){}, child: Text("No")),
+        ],
+      );
+    });
   }
 }

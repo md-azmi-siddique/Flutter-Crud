@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+class UpdateProductScreen extends StatefulWidget {
+  const UpdateProductScreen({super.key});
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<UpdateProductScreen> createState() => _UpdateProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -21,7 +21,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         foregroundColor: Colors.white,
         title: const Padding(
           padding: EdgeInsets.only(left: 0, right: 0),
-          child: Text("Add Product"),
+          child: Text("Update Product"),
         ),
       ),
       body: SingleChildScrollView(
@@ -88,7 +88,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     }
                   },
                   child: const Text(
-                    "Add",
+                    "Update",
                   ),
                 ),
               ],
@@ -104,7 +104,5 @@ class _AddProductScreenState extends State<AddProductScreen> {
     _quantityController.dispose();
     _descriptionController.dispose();
     super.dispose();
-
-
   }
 }
