@@ -47,16 +47,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
   void _showDeleteConfirmationDialog(){
-    print("Button is pressing");
+    // print("Button is pressing");
     showDialog(context: context, builder: (context){
       return AlertDialog(
-        title: Text("Hello"),
-        content: Text("kkkk"),
+        title: const Text("Hello"),
+        content: const Text("kkkk"),
         actions: [
-          TextButton(onPressed: (){}, child: Text("Yes"),),
+          TextButton(onPressed: (){}, child: const Text("Yes"),),
           TextButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text("No"),),
+          }, child: const Text("No"),),
         ],
       );
     });
