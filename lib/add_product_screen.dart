@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -12,7 +11,7 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -50,7 +49,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   height: 30,
                 ),
                 TextFormField(
-                  controller: _quantityController,
+                  controller: _priceController,
                   validator: (String? value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Proper Field Required';
@@ -58,7 +57,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return null;
                   },
                   decoration: const InputDecoration(
-                      labelText: 'Quantity', hintText: 'Eg: 10'),
+                      labelText: 'Price', hintText: 'Eg: 10'),
                   maxLength: 3,
                   keyboardType: TextInputType.number,
                 ),
@@ -103,20 +102,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Future<void> _addProduct() async {
     // print("object");
     //POST
-    const String addNewURI = 'https://crud.teamrabbil.com/api/v1/CreateProduct';
+    const String addNewURI = 'http://127.0.0.1:8000/api/products/create/';
     Map<String, dynamic> inputData = {
       // key : value
+      'productName' : _priceController,
+      'price' : _priceController,
+      'img': _descriptionController
     };
     Uri uri = Uri.parse(addNewURI);
     Response response = await post(uri,
         body: jsonEncode(inputData),
         headers: {'content-type': 'application/json'});
+    print(response.body);
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _quantityController.dispose();
+    _priceController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
