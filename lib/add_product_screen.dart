@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -26,7 +29,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
             child: Column(
@@ -82,9 +85,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // return null;
-                    } else {
-                      // Navigator.pop(context);
+                      _addProduct();
                     }
                   },
                   child: const Text(
@@ -98,13 +99,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
     );
   }
+
+  Future<void> _addProduct() async {
+    // print("object");
+    //POST
+    const String addNewURI = 'https://crud.teamrabbil.com/api/v1/CreateProduct';
+    Map<String, dynamic> inputData = {
+      // key : value
+    };
+    Uri uri = Uri.parse(addNewURI);
+    Response response = await post(uri,
+        body: jsonEncode(inputData),
+        headers: {'content-type': 'application/json'});
+  }
+
   @override
-  void dispose(){
+  void dispose() {
     _nameController.dispose();
     _quantityController.dispose();
     _descriptionController.dispose();
     super.dispose();
-
-
   }
 }
