@@ -100,21 +100,34 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<void> _addProduct() async {
-    // print("object");
-    //POST
-    const String addNewURI = 'http://127.0.0.1:8000/api/products/create/';
+    // const String addNewURI = 'http://localhost:8000/api/products/create';
+    const String addNewURI = 'http://10.0.2.2:8000/api/products/create/';
+
     Map<String, dynamic> inputData = {
-      // key : value
-      'productName' : _priceController,
-      'price' : _priceController,
-      'img': _descriptionController
+      'productName': _nameController.text,
+      'price': _priceController.text,
+      'img': _descriptionController.text
     };
     Uri uri = Uri.parse(addNewURI);
-    Response response = await post(uri,
+    try {
+      Response response = await post(
+        uri,
         body: jsonEncode(inputData),
-        headers: {'content-type': 'application/json'});
-    print(response.body);
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 201) {
+        // Handle successful response
+        print('Product added successfully');
+      } else {
+        // Handle error response
+        print('Failed to add product: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+    }
   }
+
 
   @override
   void dispose() {
