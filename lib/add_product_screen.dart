@@ -84,6 +84,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      print('add product');
                       _addProduct();
                     }
                   },
@@ -100,9 +101,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<void> _addProduct() async {
+    print('dhukse');
     // const String addNewURI = 'http://localhost:8000/api/products/create';
     const String addNewURI = 'http://10.0.2.2:8000/api/products/create/';
-
+    print('dhukse');
     Map<String, dynamic> inputData = {
       'productName': _nameController.text,
       'price': _priceController.text,
@@ -118,14 +120,46 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
       if (response.statusCode == 201) {
         // Handle successful response
+        _showSuccessDialogMassage();
         print('Product added successfully');
       } else {
+        _showErrorDialogMassage();
         // Handle error response
         print('Failed to add product: ${response.statusCode}');
       }
     } catch (e) {
+      _showErrorDialogMassage();
       print('Error occurred: $e');
     }
+  }
+
+  void _showErrorDialogMassage(){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Text("Failed to Upload"),
+        content: const Text("Network Issue, Please Try again"),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("OK"))
+        ],
+      );
+    });
+  }
+
+
+  void _showSuccessDialogMassage(){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Text("Upload"),
+        content: const Text("Upload Successfully"),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("OK"))
+        ],
+      );
+    });
   }
 
 
