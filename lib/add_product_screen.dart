@@ -15,6 +15,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool _addNewProductInProgress = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,17 +83,23 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(
                   height: 40,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print('add product');
-                      _addProduct();
-                    }
-                  },
-                  child: const Text(
-                    "Add",
+                Visibility(
+                  visible: _addNewProductInProgress == false,
+                  replacement: const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        print('add product');
+                        _addProduct();
+                      }
+                    },
+                    child: const Text(
+                      "Add",
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -101,6 +109,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<void> _addProduct() async {
+    _addNewProductInProgress = true;
+    setState(() {});
     print('dhukse');
     // const String addNewURI = 'http://localhost:8000/api/products/create';
     const String addNewURI = 'http://10.0.2.2:8000/api/products/create/';
@@ -121,6 +131,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (response.statusCode == 201) {
         // Handle successful response
         _showSuccessDialogMassage();
+        _nameController.clear();
+        _priceController.clear();
+        _descriptionController.clear();
         print('Product added successfully');
       } else {
         _showErrorDialogMassage();
@@ -131,37 +144,46 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _showErrorDialogMassage();
       print('Error occurred: $e');
     }
+
+    _addNewProductInProgress = false;
+    setState(() {});
   }
 
-  void _showErrorDialogMassage(){
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        title: const Text("Failed to Upload"),
-        content: const Text("Network Issue, Please Try again"),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text("OK"))
-        ],
-      );
-    });
+  void _showErrorDialogMassage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Failed to Upload"),
+            content: const Text("Network Issue, Please Try again"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("OK"))
+            ],
+          );
+        });
   }
 
-
-  void _showSuccessDialogMassage(){
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        title: const Text("Upload"),
-        content: const Text("Upload Successfully"),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text("OK"))
-        ],
-      );
-    });
+  void _showSuccessDialogMassage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Upload"),
+            content: const Text("Upload Successfully"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("OK"))
+            ],
+          );
+        });
   }
-
 
   @override
   void dispose() {
