@@ -134,6 +134,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         _nameController.clear();
         _priceController.clear();
         _descriptionController.clear();
+        print('Success ${response.statusCode}');
         print('Product added successfully');
       } else {
         _showErrorDialogMassage();
@@ -177,6 +178,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             actions: [
               TextButton(
                   onPressed: () {
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                   child: const Text("OK"))
