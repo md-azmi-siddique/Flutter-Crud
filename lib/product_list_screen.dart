@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:crud_operation/update_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -11,9 +12,10 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   bool _getProductListProgress = false;
+  List<Product> productList = [];
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getProduct();
   }
@@ -25,13 +27,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
         child: CircularProgressIndicator(),
       ),
       child: ListView.separated(
-        itemCount: 50,
+        itemCount: productList.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: const Text("Product Name"),
-            subtitle: const Wrap(
+            title: Text(productList[index].productName), // Use actual product name
+            subtitle: Wrap(
               spacing: 20,
-              children: [Text("data"), Text("data")],
+              children: [
+                Text('Price: ${productList[index].price}'), // Use actual price
+                Text('ID: ${productList[index].id.toString()}'), // Use actual ID
+              ],
             ),
             trailing: Wrap(
               children: [
@@ -64,32 +69,80 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Future<void> _getProduct() async {
     _getProductListProgress = true;
     setState(() {});
-    const String getProductUrl = "http://127.0.0.1:8000/api/products/";
+
+    productList.clear();
+    const String getProductUrl = "http://10.0.2.2:8000/api/products/";
     Uri uri = Uri.parse(getProductUrl);
-    Response response = await get(uri);
+
+    try {
+      Response response = await get(uri);
+
+      if (response.statusCode == 200) {
+        print("Data found successfully");
+        final List<dynamic> decodedData = json.decode(response.body);
+        print(decodedData);
+
+        // Iterate through the decoded JSON list
+        for (var p in decodedData) {
+          // Ensure that each product is a Map<String, dynamic>
+          if (p is Map<String, dynamic>) {
+            int id = int.tryParse(p['id'].toString()) ?? 0;
+            String productName = p['productName'] ?? '';
+            String price = p['price'].toString();  // Ensuring price is treated as a String
+            String img = p['img'] ?? '';
+
+            // Create a Product object and add it to the list
+            Product product = Product(id, productName, price, img);
+            productList.add(product);
+          }
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to load products")),
+        );
+      }
+    } catch (e) {
+      print("Error fetching products: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error fetching products")),
+      );
+    }
+
+    _getProductListProgress = false;
+    setState(() {});
   }
 
+
   void _showDeleteConfirmationDialog() {
-    // print("Button is pressing");
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Hello"),
-            content: const Text("kkkk"),
-            actions: [
-              TextButton(
-                onPressed: () {},
-                child: const Text("Yes"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("No"),
-              ),
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Delete"),
+          content: const Text("Are you sure you want to delete this product?"),
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: const Text("Yes"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("No"),
+            ),
+          ],
+        );
+      },
+    );
   }
+}
+
+class Product {
+  final int id;
+  final String productName;
+  final String price;
+  final String img;
+
+  Product(this.id, this.productName, this.price, this.img);
 }
