@@ -179,7 +179,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
                   child: const Text("OK"))
             ],
