@@ -21,50 +21,57 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: _getProductListProgress == false,
-      replacement: const Center(
-        child: CircularProgressIndicator(),
-      ),
-      child: ListView.separated(
-        itemCount: productList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(productList[index].productName), // Use actual product name
-            subtitle: Wrap(
-              spacing: 20,
-              children: [
-                Text('Price: ${productList[index].price}'), // Use actual price
-                Text('ID: ${productList[index].id.toString()}'), // Use actual ID
-              ],
-            ),
-            trailing: Wrap(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UpdateProductScreen(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.edit),
-                  color: Colors.green,
+    return RefreshIndicator(
+      onRefresh: _getProduct,
+      child: Visibility(
+        visible: _getProductListProgress == false,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: ListView.separated(
+          itemCount: productList.length,
+          itemBuilder: (context, index) {
+            return RefreshIndicator(
+              onRefresh: _getProduct,
+              child: ListTile(
+                title: Text(productList[index].productName), // Use actual product name
+                subtitle: Wrap(
+                  spacing: 20,
+                  children: [
+                    Text('Price: ${productList[index].price}'), // Use actual price
+                    Text('ID: ${productList[index].id.toString()}'), // Use actual ID
+                  ],
                 ),
-                IconButton(
-                  onPressed: _showDeleteConfirmationDialog,
-                  icon: const Icon(Icons.delete),
-                  color: Colors.red,
+                trailing: Wrap(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UpdateProductScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                      color: Colors.green,
+                    ),
+                    IconButton(
+                      onPressed: _showDeleteConfirmationDialog,
+                      icon: const Icon(Icons.delete),
+                      color: Colors.red,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-        separatorBuilder: (_, __) => const Divider(),
+              ),
+            );
+          },
+          separatorBuilder: (_, __) => const Divider(),
+        ),
       ),
     );
   }
+
 
   Future<void> _getProduct() async {
     _getProductListProgress = true;
@@ -78,9 +85,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
       Response response = await get(uri);
 
       if (response.statusCode == 200) {
-        print("Data found successfully");
+        // print("Data found successfully");
         final List<dynamic> decodedData = json.decode(response.body);
-        print(decodedData);
+        // print(decodedData);
 
         // Iterate through the decoded JSON list
         for (var p in decodedData) {
@@ -136,6 +143,35 @@ class _ProductListScreenState extends State<ProductListScreen> {
       },
     );
   }
+  Future<void> _deleteProduct(int productId) async {
+    const String deleteProductUrl = "http://10.0.2.2:8000/api/products/";  // base URL
+    Uri uri = Uri.parse('$deleteProductUrl$productId/');  // construct URL with product ID
+
+    try {
+      Response response = await delete(uri);
+
+      if (response.statusCode == 204) {
+        // Successfully deleted
+        print("Product deleted successfully");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Product deleted successfully")),
+        );
+        // After deletion, reload the product list
+        _getProduct();
+      } else {
+        // Failed to delete
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to delete product")),
+        );
+      }
+    } catch (e) {
+      print("Error deleting product: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error deleting product")),
+      );
+    }
+  }
+
 }
 
 class Product {
