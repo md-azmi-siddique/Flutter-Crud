@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const colorRed = Color.fromARGB(231, 28, 36, 1);
 const colorGreen = Colors.green;
@@ -20,19 +21,19 @@ InputDecoration AppInputDecoration(label) {
   return InputDecoration(
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: colorGreen,
+        color: Colors.indigo,
         width: 1,
       ),
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: colorWhite,
+        color: Colors.white,
         width: 0,
       ),
     ),
     border: OutlineInputBorder(),
     labelText: label,
-    fillColor: colorWhite,
+    fillColor: Colors.white,
     filled: true,
     contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 20),
   );
@@ -82,5 +83,29 @@ Ink SuccessButton(ButtonText) {
         ),
       ),
     ),
+  );
+}
+
+void errorToast(msg){
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0
+  );
+}
+
+void successToast(msg){
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0
   );
 }

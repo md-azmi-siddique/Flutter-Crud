@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/screen/create_screen.dart';
+import 'package:flutter_crud/screen/create_screen_new.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const CreateScreen(),
+      home: const CreateScreenNew(),
     );
   }
 }
