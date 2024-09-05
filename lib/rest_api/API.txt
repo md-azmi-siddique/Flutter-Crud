@@ -1,0 +1,3 @@
+https://crud.teamrabbil.com/api/v1/CreateProduct
+
+https://crud.teamrabbil.com/api/v1/ReadProduct
