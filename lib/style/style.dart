@@ -77,16 +77,13 @@ Ink SuccessButton(ButtonText) {
       child: Text(
         ButtonText,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15,
-          color: Colors.white
-        ),
+            fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
       ),
     ),
   );
 }
 
-void errorToast(msg){
+void errorToast(msg) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
@@ -94,11 +91,10 @@ void errorToast(msg){
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
-      fontSize: 16.0
-  );
+      fontSize: 16.0);
 }
 
-void successToast(msg){
+void successToast(msg) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
@@ -106,6 +102,13 @@ void successToast(msg){
       timeInSecForIosWeb: 1,
       backgroundColor: Colors.green,
       textColor: Colors.white,
-      fontSize: 16.0
+      fontSize: 16.0);
+}
+
+SliverGridDelegateWithFixedCrossAxisCount ProductGridViewStyle() {
+  return SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 2,
+    mainAxisExtent: 250,
   );
 }
