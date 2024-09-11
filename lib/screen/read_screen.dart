@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/rest_api/rest_client.dart';
+import 'package:flutter_crud/screen/create_screen_new.dart';
 
 import '../style/style.dart';
 
@@ -47,6 +48,7 @@ class _ReadScreenState extends State<ReadScreen> {
             ))
                 : GridView.builder(
               gridDelegate: ProductGridViewStyle(),
+              itemCount: productList.length,
               itemBuilder: (context, index) {
                 // Your item builder code here
                 return Card(
@@ -54,15 +56,41 @@ class _ReadScreenState extends State<ReadScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Expanded(child: Image.network(productList[index]['img'],fit: BoxFit.fill,),),
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Text(productList[index]['productName']),
+                            Text(productList[index]['price']),
+                            Row(
+                              children: [
+                                IconButton(onPressed: (){}, icon: Icon(Icons.edit),),
+                                IconButton(onPressed: (){}, icon: Icon(Icons.delete),),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
 
                     ],
                   ),
                 );
               },
             ),
-          )
+          ),
         ],
       ),
-    );
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateScreenNew()),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.indigoAccent,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      );
   }
 }
