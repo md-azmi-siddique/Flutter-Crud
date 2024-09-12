@@ -64,8 +64,38 @@ class _ReadScreenState extends State<ReadScreen> {
                             Text(productList[index]['price']),
                             Row(
                               children: [
-                                IconButton(onPressed: (){}, icon: Icon(Icons.edit),),
-                                IconButton(onPressed: (){}, icon: Icon(Icons.delete),),
+                                IconButton(onPressed: (){}, icon: Icon(Icons.edit),color: Colors.green,),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Delete Confirmation'),
+                                          content: Text('Are you sure you want to delete this item?'),
+                                          actions: [
+                                            TextButton(
+                                              child: Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Close the dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('Delete'),
+                                              onPressed: () {
+                                                // Perform delete operation here
+                                                Navigator.of(context).pop(); // Close the dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.red,
+                                ),
+
                               ],
                             )
                           ],
